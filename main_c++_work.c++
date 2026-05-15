@@ -57,7 +57,7 @@ public:
     }
 
     virtual void print(ostream& os) const {
-        os << lastName << "|" << firstName << "|" << patronymic << "|" << course << "|" << idNumber << "|" << rating;
+        os << lastName << "," << firstName << "," << patronymic << "," << course << "," << idNumber << "," << rating;
     }
 
     virtual void read(istream& is) {
@@ -65,12 +65,12 @@ public:
         if (getline(is, line)) {
             stringstream ss(line);
             string c_str, r_str;
-            getline(ss, lastName, '|');
-            getline(ss, firstName, '|');
-            getline(ss, patronymic, '|');
-            getline(ss, c_str, '|');
-            getline(ss, idNumber, '|');
-            getline(ss, r_str, '|');
+            getline(ss, lastName, ',');
+            getline(ss, firstName, ',');
+            getline(ss, patronymic, ',');
+            getline(ss, c_str, ',');
+            getline(ss, idNumber, ',');
+            getline(ss, r_str, ',');
             try {
                 if(!c_str.empty()) course = stoi(c_str);
                 if(!r_str.empty()) rating = stoi(r_str);
@@ -155,7 +155,7 @@ public:
 
     void print(ostream& os) const override {
         Student::print(os);
-        os << "|" << diplomaTopic << "|" << completionPercentage;
+        os << "," << diplomaTopic << "," << completionPercentage;
     }
 
     void read(istream& is) override {
@@ -163,14 +163,14 @@ public:
         if (getline(is, line)) {
             stringstream ss(line);
             string c_str, r_str, p_str;
-            getline(ss, lastName, '|');
-            getline(ss, firstName, '|');
-            getline(ss, patronymic, '|');
-            getline(ss, c_str, '|');
-            getline(ss, idNumber, '|');
-            getline(ss, r_str, '|');
-            getline(ss, diplomaTopic, '|');
-            getline(ss, p_str, '|');
+            getline(ss, lastName, ',');
+            getline(ss, firstName, ',');
+            getline(ss, patronymic, ',');
+            getline(ss, c_str, ',');
+            getline(ss, idNumber, ',');
+            getline(ss, r_str, ',');
+            getline(ss, diplomaTopic, ',');
+            getline(ss, p_str, ',');
             try {
                 if(!c_str.empty()) course = stoi(c_str);
                 if(!r_str.empty()) rating = stoi(r_str);
@@ -324,7 +324,7 @@ string getInputString(const string& prompt) {
 
 int main() {
     Group group;
-    const string filename = "data.txt";
+    const string filename = "data.csv";
     
     group.loadFromFile(filename);
 
@@ -356,7 +356,7 @@ int main() {
                     int perc = getInputInt("Completion % (0-100): ");
                     group.addStudent(new StudentDiploma(ln, fn, p, c, id, r, t, perc));
                     group.saveToFile(filename);
-                    cout << "Student added and saved.\n";
+                    cout << "Student added and saved to CSV.\n";
                     break;
                 }
                 case 2: {
