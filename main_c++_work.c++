@@ -72,8 +72,8 @@ public:
             getline(ss, idNumber, '|');
             getline(ss, r_str, '|');
             try {
-                course = stoi(c_str);
-                rating = stoi(r_str);
+                if(!c_str.empty()) course = stoi(c_str);
+                if(!r_str.empty()) rating = stoi(r_str);
                 validate();
             } catch (...) {
                 is.setstate(ios::failbit);
@@ -172,9 +172,9 @@ public:
             getline(ss, diplomaTopic, '|');
             getline(ss, p_str, '|');
             try {
-                course = stoi(c_str);
-                rating = stoi(r_str);
-                completionPercentage = stoi(p_str);
+                if(!c_str.empty()) course = stoi(c_str);
+                if(!r_str.empty()) rating = stoi(r_str);
+                if(!p_str.empty()) completionPercentage = stoi(p_str);
                 validate();
                 validateDiploma();
             } catch (...) {
@@ -263,25 +263,25 @@ public:
                 found = true;
             }
         }
-        if (!found) cout << "No high achievers found.\n";
+        if (!found) cout << "No high achievers found (>80%).\n";
     }
 
     void saveToFile(const string& filename) {
         ofstream out(filename);
-        if (!out) throw runtime_error("Cannot open file");
+        if (!out) throw runtime_error("Cannot open file for writing");
         for (auto s : students) out << *s << "\n";
     }
 
     void loadFromFile(const string& filename) {
         ifstream in(filename);
-        if (!in) throw runtime_error("Cannot open file");
+        if (!in) return;
         clear();
         string line;
         while (getline(in, line)) {
             if(line.empty()) continue;
             stringstream ss(line);
             StudentDiploma* s = new StudentDiploma();
-            ss >> *s;
+            s->read(ss);
             if (!ss.fail()) {
                 students.push_back(s);
             } else {
@@ -296,7 +296,7 @@ public:
             return;
         }
         Student* basePtr = students[0];
-        cout << "Late Binding Test: " << basePtr->GetStringData() << "\n";
+        cout << "Late Binding Test (Virtual Method): " << basePtr->GetStringData() << "\n";
     }
 };
 
@@ -324,10 +324,13 @@ string getInputString(const string& prompt) {
 
 int main() {
     Group group;
-    int choice;
+    const string filename = "data.txt";
+    
+    group.loadFromFile(filename);
 
+    int choice;
     do {
-        cout << "\n--- Student Management ---\n";
+        cout << "\n--- Student Management (Auto-sync enabled) ---\n";
         cout << "1. Add Student\n";
         cout << "2. Remove Student\n";
         cout << "3. Edit Student Data\n";
@@ -336,8 +339,6 @@ int main() {
         cout << "6. Display All Students\n";
         cout << "7. Show High Achievers (>80%)\n";
         cout << "8. Test Late Binding\n";
-        cout << "9. Save to File\n";
-        cout << "10. Load from File\n";
         cout << "0. Exit\n";
         
         choice = getInputInt("Select option: ");
@@ -354,13 +355,15 @@ int main() {
                     string t = getInputString("Diploma Topic: ");
                     int perc = getInputInt("Completion % (0-100): ");
                     group.addStudent(new StudentDiploma(ln, fn, p, c, id, r, t, perc));
-                    cout << "Operation successful.\n";
+                    group.saveToFile(filename);
+                    cout << "Student added and saved.\n";
                     break;
                 }
                 case 2: {
                     string id = getInputString("Enter Student ID to remove: ");
                     group.removeStudent(id);
-                    cout << "Operation successful.\n";
+                    group.saveToFile(filename);
+                    cout << "Student removed and saved.\n";
                     break;
                 }
                 case 3: {
@@ -370,18 +373,15 @@ int main() {
                         cout << "Student not found.\n";
                         break;
                     }
-                    cout << "Enter new details:\n";
-                    string ln = getInputString("New Last Name: ");
-                    string fn = getInputString("New First Name: ");
-                    string p = getInputString("New Patronymic: ");
-                    int c = getInputInt("New Course (1-6): ");
-                    int r = getInputInt("New Rating (0-100): ");
-                    string t = getInputString("New Diploma Topic: ");
-                    int perc = getInputInt("New Completion % (0-100): ");
-                    
-                    s->updateBasicInfo(ln, fn, p, c, r);
-                    s->updateDiplomaInfo(t, perc);
-                    cout << "Operation successful.\n";
+                    s->updateBasicInfo(getInputString("New Last Name: "), 
+                                       getInputString("New First Name: "), 
+                                       getInputString("New Patronymic: "), 
+                                       getInputInt("New Course (1-6): "), 
+                                       getInputInt("New Rating (0-100): "));
+                    s->updateDiplomaInfo(getInputString("New Diploma Topic: "), 
+                                         getInputInt("New Completion % (0-100): "));
+                    group.saveToFile(filename);
+                    cout << "Changes saved.\n";
                     break;
                 }
                 case 4: {
@@ -389,18 +389,19 @@ int main() {
                     StudentDiploma* s = group.getStudent(id);
                     if (s) {
                         ++(*s);
-                        cout << "Course incremented.\n";
-                    } else cout << "Student not found.\n";
+                        group.saveToFile(filename);
+                        cout << "Course updated and saved.\n";
+                    } else cout << "Not found.\n";
                     break;
                 }
                 case 5: {
                     string id = getInputString("Enter Student ID: ");
                     StudentDiploma* s = group.getStudent(id);
                     if (s) {
-                        int r = getInputInt("Enter new rating: ");
-                        (*s) ^ r;
-                        cout << "Rating updated.\n";
-                    } else cout << "Student not found.\n";
+                        (*s) ^ getInputInt("Enter new rating: ");
+                        group.saveToFile(filename);
+                        cout << "Rating updated and saved.\n";
+                    } else cout << "Not found.\n";
                     break;
                 }
                 case 6:
@@ -411,14 +412,6 @@ int main() {
                     break;
                 case 8:
                     group.demonstrateLateBinding();
-                    break;
-                case 9:
-                    group.saveToFile("data.txt");
-                    cout << "Saved to data.txt.\n";
-                    break;
-                case 10:
-                    group.loadFromFile("data.txt");
-                    cout << "Loaded from data.txt.\n";
                     break;
                 case 0:
                     cout << "Exiting...\n";
