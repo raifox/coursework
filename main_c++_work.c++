@@ -330,7 +330,7 @@ int main() {
 
     int choice;
     do {
-        cout << "\n--- Student Management (Auto-sync enabled) ---\n";
+        cout << "\n--- Student Management ---\n";
         cout << "1. Add Student\n";
         cout << "2. Remove Student\n";
         cout << "3. Edit Student Data\n";
@@ -424,5 +424,5 @@ int main() {
         }
     } while (choice != 0);
 
-    return 0;
+    return 0; 
 }
