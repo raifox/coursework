@@ -30,7 +30,15 @@ public:
         validate();
     }
 
-    Student(const Student& other) = default;
+    Student(const Student& other) {
+        lastName = other.lastName;
+        firstName = other.firstName;
+        patronymic = other.patronymic;
+        course = other.course;
+        idNumber = other.idNumber;
+        rating = other.rating;
+    }
+
     Student(Student&& other) noexcept = default;
     Student& operator=(const Student& other) = default;
     Student& operator=(Student&& other) noexcept = default;
@@ -130,6 +138,11 @@ public:
     StudentDiploma(string ln, string fn, string p, int c, string id, int r, string topic, int perc)
         : Student(move(ln), move(fn), move(p), c, move(id), r), diplomaTopic(move(topic)), completionPercentage(perc) {
         validateDiploma();
+    }
+
+    StudentDiploma(const StudentDiploma& other) : Student(other) {
+        diplomaTopic = other.diplomaTopic;
+        completionPercentage = other.completionPercentage;
     }
 
     ~StudentDiploma() override = default;
