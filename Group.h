@@ -27,5 +27,7 @@ public:
     void SaveToFile(string filename) const;
     void LoadFromFile(string filename);
     
+    string GenerateNextId() const;
+    
     GroupIterator CreateIterator() const;
 };
