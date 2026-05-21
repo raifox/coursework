@@ -9,9 +9,9 @@
       "stopAtEntry": false,
       "externalConsole": true,
       "cwd": "c:/Users/alexr/OneDrive/Dokumente/GitHub/coursework",
-      "program": "c:/Users/alexr/OneDrive/Dokumente/GitHub/coursework/build/Debug/outDebug",
+      "program": "C:/Users/alexr/OneDrive/Dokumente/GitHub/coursework/output/main.exe",
       "MIMode": "gdb",
-      "miDebuggerPath": "gdb",
+      "miDebuggerPath": "C:/msys64/mingw64/bin/gdb.exe",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
