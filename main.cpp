@@ -23,19 +23,34 @@ int main() {
 
         switch (choice) {
             case 1: {
-                string ln, fn, mn, theme;
+                string ln, fn, mn, theme, id;
                 int c, r, p;
-                cout << "Last name: "; cin >> ln;
-                cout << "First name: "; cin >> fn;
-                cout << "Middle name: "; cin >> mn;
-                cout << "Course (1-6): "; cin >> c;
-                cout << "Rating (0-100): "; cin >> r;
-                cout << "Diploma theme: "; cin.ignore(); getline(cin, theme);
-                cout << "Progress (0-100): "; cin >> p;
-                
-                string autoId = group.GenerateNextId();
-                group.AddStudent(new StudentDiploma(ln, fn, mn, c, autoId, r, theme, p));
-                cout << "\nStudent successfully added! Auto-generated ID: " << autoId << "\n";
+
+                cout << "Enter last name: ";
+                cin >> ln;
+                cout << "Enter first name: ";
+                cin >> fn;
+                cout << "Enter patronymic: ";
+                cin >> mn;
+                cout << "Enter course: ";
+                cin >> c;
+                cout << "Enter rating: ";
+                cin >> r;
+                cout << "Enter diploma theme: ";
+                cin.ignore();
+                getline(cin, theme);
+                cout << "Enter completion percentage: ";
+                cin >> p;
+
+                id = group.GenerateNextId();
+
+                try {
+                    StudentDiploma* student = new StudentDiploma(ln, fn, mn, c, id, r, theme, p);
+                    group.AddStudent(student);
+                    cout << "Success" << endl;
+                } catch (const invalid_argument& e) {
+                    cout << "Error: " << e.what() << endl;
+                }
                 break;
             }
             case 2: {

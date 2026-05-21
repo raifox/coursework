@@ -1,5 +1,6 @@
 #include "Group.h"
 #include <fstream>
+#include <iostream>
 
 GroupIterator::GroupIterator(const vector<StudentDiploma*>& s) : students(s), index(0) {}
 
@@ -27,6 +28,7 @@ void Group::AddStudent(StudentDiploma* student) {
     for (auto s : students) {
         if (s->GetId() == student->GetId()) {
             cout << "Error: ID already exists!" << endl;
+            delete student;
             return;
         }
     }

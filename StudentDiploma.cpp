@@ -1,23 +1,32 @@
 #include "StudentDiploma.h"
-#include <sstream>
 
-StudentDiploma::StudentDiploma() : Student(), theme(""), progress(0) {}
+StudentDiploma::StudentDiploma() : Student() {
+    theme = "";
+    progress = 0;
+}
 
-StudentDiploma::StudentDiploma(string lName, string fName, string mName, int c, string i, int r, string t, int p) 
+StudentDiploma::StudentDiploma(string lName, string fName, string mName, int c, string i, int r, string t, int p)
     : Student(lName, fName, mName, c, i, r) {
     theme = t;
-    progress = (p >= 0 && p <= 100) ? p : 0;
+    SetProgress(p);
 }
 
-StudentDiploma::StudentDiploma(const StudentDiploma& other) 
-    : Student(other), theme(other.theme), progress(other.progress) {}
-
-int StudentDiploma::GetProgress() const {
-    return progress;
+StudentDiploma::StudentDiploma(const StudentDiploma& other) : Student(other) {
+    theme = other.theme;
+    progress = other.progress;
 }
 
-string StudentDiploma::GetTheme() const {
-    return theme;
+StudentDiploma::~StudentDiploma() {}
+
+string StudentDiploma::GetTheme() const { return theme; }
+void StudentDiploma::SetTheme(string t) { theme = t; }
+
+int StudentDiploma::GetProgress() const { return progress; }
+void StudentDiploma::SetProgress(int p) {
+    if (p < 0 || p > 100) {
+        throw invalid_argument("Percentage must be between 0 and 100");
+    }
+    progress = p;
 }
 
 string StudentDiploma::GetStringData() const {
@@ -25,26 +34,15 @@ string StudentDiploma::GetStringData() const {
 }
 
 ostream& operator<<(ostream& os, const StudentDiploma& sd) {
-    os << static_cast<const Student&>(sd) << "," << sd.theme << "," << sd.progress;
+    os << sd.lastName << " " << sd.firstName << " " << sd.middleName << " "
+       << sd.course << " " << sd.id << " " << sd.rating << " "
+       << sd.progress << " " << sd.theme;
     return os;
 }
 
 istream& operator>>(istream& is, StudentDiploma& sd) {
-    string line;
-    if (getline(is, line)) {
-        stringstream ss(line);
-        string temp;
-        getline(ss, sd.lastName, ',');
-        getline(ss, sd.firstName, ',');
-        getline(ss, sd.middleName, ',');
-        getline(ss, temp, ',');
-        sd.course = temp.empty() ? 1 : stoi(temp);
-        getline(ss, sd.id, ',');
-        getline(ss, temp, ',');
-        sd.rating = temp.empty() ? 0 : stoi(temp);
-        getline(ss, sd.theme, ',');
-        getline(ss, temp, '\n');
-        sd.progress = temp.empty() ? 0 : stoi(temp);
-    }
+    is >> sd.lastName >> sd.firstName >> sd.middleName 
+       >> sd.course >> sd.id >> sd.rating >> sd.progress;
+    getline(is >> ws, sd.theme);
     return is;
 }
