@@ -69,6 +69,30 @@ void Group::LoadFromFile(string filename) {
     }
 }
 
+string Group::GenerateNextId() const {
+    if (students.empty()) {
+        return "1001";
+    }
+    
+    int maxId = 0;
+    for (auto s : students) {
+        try {
+            int currentId = stoi(s->GetId());
+            if (currentId > maxId) {
+                maxId = currentId;
+            }
+        } catch (...) {
+            continue;
+        }
+    }
+    
+    if (maxId == 0) {
+        return "1001";
+    }
+    
+    return to_string(maxId + 1);
+}
+
 GroupIterator Group::CreateIterator() const {
     return GroupIterator(students);
 }
