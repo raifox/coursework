@@ -107,7 +107,7 @@ void Group::CloneStudent(string id) {
 
     if (original != nullptr) {
         StudentDiploma* cloned = new StudentDiploma(*original);
-        cloned->SetId(original->GetId() + "_copy");
+        cloned->SetId(GenerateNextId());
         AddStudent(cloned);
         cout << "Successfully cloned. New ID: " << cloned->GetId() << "\n";
     } else {
