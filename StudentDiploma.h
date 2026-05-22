@@ -1,6 +1,5 @@
 #pragma once
 #include "Student.h"
-#include <iostream>
 
 class StudentDiploma : public Student {
 private:
@@ -21,6 +20,6 @@ public:
 
     string GetStringData() const override;
 
-    friend ostream& operator<<(ostream& os, const StudentDiploma& sd);
     friend istream& operator>>(istream& is, StudentDiploma& sd);
+    friend ostream& operator<<(ostream& os, const StudentDiploma& sd);
 };

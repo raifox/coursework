@@ -1,7 +1,7 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include <stdexcept>
-#include <iostream>
 
 using namespace std;
 
@@ -18,6 +18,7 @@ public:
     Student();
     Student(string lName, string fName, string mName, int c, string i, int r);
     Student(const Student& other);
+    Student(Student&& other);
     virtual ~Student();
 
     string GetLastName() const;
@@ -40,14 +41,11 @@ public:
 
     friend Student& operator++(Student& s);
     Student operator^(int newRating);
-
-    virtual string GetStringData() const;
-
-    Student(Student&& other);
-    
     Student& operator=(const Student& other);
     Student& operator=(Student&& other);
-    
+
     friend istream& operator>>(istream& is, Student& s);
     friend ostream& operator<<(ostream& os, const Student& s);
+
+    virtual string GetStringData() const;
 };

@@ -27,7 +27,7 @@ Group::~Group() {
 void Group::AddStudent(StudentDiploma* student) {
     for (auto s : students) {
         if (s->GetId() == student->GetId()) {
-            cout << "Error: ID already exists!" << endl;
+            cout << "Error: ID already exists!\n";
             delete student;
             return;
         }
@@ -45,11 +45,20 @@ void Group::RemoveStudent(string id) {
     }
 }
 
+StudentDiploma* Group::GetStudent(string id) const {
+    for (auto s : students) {
+        if (s->GetId() == id) {
+            return s;
+        }
+    }
+    return nullptr;
+}
+
 void Group::SaveToFile(string filename) const {
     ofstream file(filename);
     if (file.is_open()) {
         for (auto student : students) {
-            file << *student << endl;
+            file << *student << "\n";
         }
         file.close();
     }

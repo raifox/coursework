@@ -33,16 +33,14 @@ string StudentDiploma::GetStringData() const {
     return theme;
 }
 
-ostream& operator<<(ostream& os, const StudentDiploma& sd) {
-    os << sd.lastName << " " << sd.firstName << " " << sd.middleName << " "
-       << sd.course << " " << sd.id << " " << sd.rating << " "
-       << sd.progress << " " << sd.theme;
-    return os;
+istream& operator>>(istream& is, StudentDiploma& sd) {
+    is >> static_cast<Student&>(sd);
+    is >> sd.theme >> sd.progress;
+    return is;
 }
 
-istream& operator>>(istream& is, StudentDiploma& sd) {
-    is >> sd.lastName >> sd.firstName >> sd.middleName 
-       >> sd.course >> sd.id >> sd.rating >> sd.progress;
-    getline(is >> ws, sd.theme);
-    return is;
+ostream& operator<<(ostream& os, const StudentDiploma& sd) {
+    os << static_cast<const Student&>(sd);
+    os << " " << sd.theme << " " << sd.progress;
+    return os;
 }

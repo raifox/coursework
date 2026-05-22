@@ -24,6 +24,7 @@ public:
 
     void AddStudent(StudentDiploma* student);
     void RemoveStudent(string id);
+    StudentDiploma* GetStudent(string id) const;
     void SaveToFile(string filename) const;
     void LoadFromFile(string filename);
     

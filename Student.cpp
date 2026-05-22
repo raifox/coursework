@@ -27,6 +27,22 @@ Student::Student(const Student& other) {
     rating = other.rating;
 }
 
+Student::Student(Student&& other) {
+    lastName = other.lastName;
+    firstName = other.firstName;
+    middleName = other.middleName;
+    course = other.course;
+    id = other.id;
+    rating = other.rating;
+
+    other.lastName = "";
+    other.firstName = "";
+    other.middleName = "";
+    other.course = 1;
+    other.id = "";
+    other.rating = 0;
+}
+
 Student::~Student() {}
 
 string Student::GetLastName() const { return lastName; }
@@ -69,25 +85,6 @@ Student Student::operator^(int newRating) {
     return *this;
 }
 
-string Student::GetStringData() const {
-    return lastName + " " + firstName;
-}
-Student::Student(Student&& other) {
-    lastName = other.lastName;
-    firstName = other.firstName;
-    middleName = other.middleName;
-    course = other.course;
-    id = other.id;
-    rating = other.rating;
-
-    other.lastName = "";
-    other.firstName = "";
-    other.middleName = "";
-    other.course = 1;
-    other.id = "";
-    other.rating = 0;
-}
-
 Student& Student::operator=(const Student& other) {
     if (this != &other) {
         lastName = other.lastName;
@@ -128,4 +125,8 @@ ostream& operator<<(ostream& os, const Student& s) {
     os << s.lastName << " " << s.firstName << " " << s.middleName << " "
        << s.course << " " << s.id << " " << s.rating;
     return os;
+}
+
+string Student::GetStringData() const {
+    return lastName + " " + firstName;
 }
