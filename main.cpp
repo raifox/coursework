@@ -9,6 +9,7 @@ void ShowMenu() {
          << "5. Demonstrate polymorphism\n"
          << "6. Save to file\n"
          << "7. Load from file\n"
+         << "8. Clone student\n"
          << "0. Exit\n"
          << "Choice: ";
 }
@@ -103,6 +104,12 @@ int main() {
             case 7: {
                 group.LoadFromFile("data.csv");
                 cout << "Loaded successfully.\n";
+                break;
+            }
+            case 8: {
+                string id;
+                cout << "Enter ID of the student to clone: "; cin >> id;
+                group.CloneStudent(id);
                 break;
             }
         }
