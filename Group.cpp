@@ -95,6 +95,26 @@ string Group::GenerateNextId() const {
     return to_string(maxId + 1);
 }
 
+void Group::CloneStudent(string id) {
+    StudentDiploma* original = nullptr;
+
+    for (auto s : students) {
+        if (s->GetId() == id) {
+            original = s;
+            break;
+        }
+    }
+
+    if (original != nullptr) {
+        StudentDiploma* cloned = new StudentDiploma(*original);
+        cloned->SetId(original->GetId() + "_copy");
+        AddStudent(cloned);
+        cout << "Successfully cloned. New ID: " << cloned->GetId() << "\n";
+    } else {
+        cout << "Error: Student not found.\n";
+    }
+}
+
 GroupIterator Group::CreateIterator() const {
     return GroupIterator(students);
 }

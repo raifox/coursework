@@ -28,6 +28,7 @@ public:
     void LoadFromFile(string filename);
     
     string GenerateNextId() const;
+    void CloneStudent(string id);
     
     GroupIterator CreateIterator() const;
 };
