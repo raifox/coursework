@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "Group.h"
 
 using namespace std;
@@ -19,7 +20,15 @@ int main() {
         cout << "9. Edit student\n";
         cout << "0. Exit\n";
         cout << "Choice: ";
-        cin >> choice;
+        
+        // Захист від введення літер замість цифр у меню
+        if (!(cin >> choice)) {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Invalid input! Please enter a number.\n";
+            choice = -1; 
+            continue;
+        }
 
         switch (choice) {
             case 1: {
@@ -29,22 +38,45 @@ int main() {
                 cout << "Enter last name: "; cin >> ln;
                 cout << "Enter first name: "; cin >> fn;
                 cout << "Enter patronymic: "; cin >> mn;
-                cout << "Enter course: "; cin >> c;
-                cout << "Enter rating: "; cin >> r;
+                
+                // Перевірка курсу одразу при введенні
+                while (true) {
+                    cout << "Enter course (1-6): ";
+                    if (cin >> c && c >= 1 && c <= 6) break;
+                    cout << "Error: Course must be between 1 and 6. Try again.\n";
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                }
+
+                // Перевірка рейтингу одразу при введенні
+                while (true) {
+                    cout << "Enter rating (0-100): ";
+                    if (cin >> r && r >= 0 && r <= 100) break;
+                    cout << "Error: Rating must be between 0 and 100. Try again.\n";
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                }
+
                 cout << "Enter diploma theme: ";
-                cin.ignore();
+                cin.ignore(10000, '\n'); // Очищуємо буфер перед читанням рядка з пробілами
                 getline(cin, theme);
-                cout << "Enter completion percentage: "; cin >> p;
+
+                // Перевірка відсотків одразу при введенні
+                while (true) {
+                    cout << "Enter completion percentage (0-100): ";
+                    if (cin >> p && p >= 0 && p <= 100) break;
+                    cout << "Error: Percentage must be between 0 and 100. Try again.\n";
+                    cin.clear();
+                    cin.ignore(10000, '\n');
+                }
 
                 id = group.GenerateNextId();
 
-                try {
-                    StudentDiploma* student = new StudentDiploma(ln, fn, mn, c, id, r, theme, p);
-                    group.AddStudent(student);
-                    cout << "Success\n";
-                } catch (const invalid_argument& e) {
-                    cout << "Error: " << e.what() << "\n";
-                }
+                // Тепер ми на 100% впевнені, що дані правильні
+                StudentDiploma* student = new StudentDiploma(ln, fn, mn, c, id, r, theme, p);
+                group.AddStudent(student);
+                cout << "Success\n";
+                
                 break;
             }
             case 2: {
@@ -120,25 +152,44 @@ int main() {
                     cout << "Enter new last name: "; cin >> ln;
                     cout << "Enter new first name: "; cin >> fn;
                     cout << "Enter new patronymic: "; cin >> mn;
-                    cout << "Enter new course: "; cin >> c;
-                    cout << "Enter new rating: "; cin >> r;
-                    cout << "Enter new diploma theme: ";
-                    cin.ignore();
-                    getline(cin, theme);
-                    cout << "Enter new completion percentage: "; cin >> p;
-
-                    try {
-                        s->SetLastName(ln);
-                        s->SetFirstName(fn);
-                        s->SetMiddleName(mn);
-                        s->SetCourse(c);
-                        s->SetRating(r);
-                        s->SetTheme(theme);
-                        s->SetProgress(p);
-                        cout << "Success!\n";
-                    } catch (const invalid_argument& e) {
-                        cout << "Error: " << e.what() << "\n";
+                    
+                    while (true) {
+                        cout << "Enter new course (1-6): ";
+                        if (cin >> c && c >= 1 && c <= 6) break;
+                        cout << "Error: Course must be between 1 and 6. Try again.\n";
+                        cin.clear();
+                        cin.ignore(10000, '\n');
                     }
+
+                    while (true) {
+                        cout << "Enter new rating (0-100): ";
+                        if (cin >> r && r >= 0 && r <= 100) break;
+                        cout << "Error: Rating must be between 0 and 100. Try again.\n";
+                        cin.clear();
+                        cin.ignore(10000, '\n');
+                    }
+
+                    cout << "Enter new diploma theme: ";
+                    cin.ignore(10000, '\n');
+                    getline(cin, theme);
+
+                    while (true) {
+                        cout << "Enter new completion percentage (0-100): ";
+                        if (cin >> p && p >= 0 && p <= 100) break;
+                        cout << "Error: Percentage must be between 0 and 100. Try again.\n";
+                        cin.clear();
+                        cin.ignore(10000, '\n');
+                    }
+
+                    s->SetLastName(ln);
+                    s->SetFirstName(fn);
+                    s->SetMiddleName(mn);
+                    s->SetCourse(c);
+                    s->SetRating(r);
+                    s->SetTheme(theme);
+                    s->SetProgress(p);
+                    cout << "Success!\n";
+                    
                 } else {
                     cout << "Error: Student not found.\n";
                 }
