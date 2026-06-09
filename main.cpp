@@ -55,20 +55,32 @@ int main() {
             }
             case 3: {
                 GroupIterator it = group.CreateIterator();
+                cout << "\n--- All Students ---\n";
                 while (it.hasNext()) {
                     StudentDiploma* s = it.next();
-                    cout << s->GetLastName() << " " << s->GetFirstName() << " " << s->GetId() << "\n";
+                    cout << "ID: " << s->GetId() 
+                         << " | " << s->GetLastName() << " " << s->GetFirstName() << " " << s->GetMiddleName() 
+                         << " | Course: " << s->GetCourse() 
+                         << " | Rating: " << s->GetRating() 
+                         << " | Theme: " << s->GetTheme() 
+                         << " | Progress: " << s->GetProgress() << "%\n";
                 }
+                cout << "--------------------\n";
                 break;
             }
             case 4: {
                 GroupIterator it = group.CreateIterator();
+                cout << "\n--- High Achievers (>80%) ---\n";
                 while (it.hasNext()) {
                     StudentDiploma* s = it.next();
                     if (s->GetProgress() > 80) {
-                        cout << s->GetLastName() << " - Progress: " << s->GetProgress() << "%\n";
+                        cout << "ID: " << s->GetId() 
+                             << " | " << s->GetLastName() << " " << s->GetFirstName() 
+                             << " | Theme: " << s->GetTheme() 
+                             << " | Progress: " << s->GetProgress() << "%\n";
                     }
                 }
+                cout << "-----------------------------\n";
                 break;
             }
             case 5: {
