@@ -117,13 +117,25 @@ Student& Student::operator=(Student&& other) {
 }
 
 istream& operator>>(istream& is, Student& s) {
-    is >> s.lastName >> s.firstName >> s.middleName >> s.course >> s.id >> s.rating;
+    string courseStr, ratingStr;
+    if (getline(is, s.lastName, ',')) {
+        getline(is, s.firstName, ',');
+        getline(is, s.middleName, ',');
+        getline(is, courseStr, ',');
+        getline(is, s.id, ',');
+        getline(is, ratingStr, ',');
+        
+        try {
+            if (!courseStr.empty()) s.course = stoi(courseStr);
+            if (!ratingStr.empty()) s.rating = stoi(ratingStr);
+        } catch (...) {}
+    }
     return is;
 }
 
 ostream& operator<<(ostream& os, const Student& s) {
-    os << s.lastName << " " << s.firstName << " " << s.middleName << " "
-       << s.course << " " << s.id << " " << s.rating;
+    os << s.lastName << "," << s.firstName << "," << s.middleName << ","
+       << s.course << "," << s.id << "," << s.rating;
     return os;
 }
 

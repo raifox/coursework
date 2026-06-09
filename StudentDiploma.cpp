@@ -35,12 +35,19 @@ string StudentDiploma::GetStringData() const {
 
 istream& operator>>(istream& is, StudentDiploma& sd) {
     is >> static_cast<Student&>(sd);
-    is >> sd.theme >> sd.progress;
+    
+    string progStr;
+    getline(is, sd.theme, ',');
+    getline(is, progStr);
+    
+    try {
+        if (!progStr.empty()) sd.progress = stoi(progStr);
+    } catch (...) {}
+    
     return is;
 }
 
 ostream& operator<<(ostream& os, const StudentDiploma& sd) {
-    os << static_cast<const Student&>(sd);
-    os << " " << sd.theme << " " << sd.progress;
+    os << static_cast<const Student&>(sd) << "," << sd.theme << "," << sd.progress;
     return os;
 }
