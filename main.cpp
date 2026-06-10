@@ -1,12 +1,13 @@
+#include <windows.h>
 #include <iostream>
 #include <string>
 #include "Group.h"
-#include <windows.h>
+
 
 using namespace std;
 
 int main() {
-    
+
     SetConsoleCP(CP_UTF8);
     SetConsoleOutputCP(CP_UTF8);
 
